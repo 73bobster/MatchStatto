@@ -113,7 +113,7 @@ export function parseMatchHeader(html, team, pageId) {
 }
 
 async function get(url) {
-  const res = await fetch(url, { headers: { 'User-Agent': 'touchline-poc/0.1 (hobby project; hourly at most)', 'Accept-Language': 'en-GB' } });
+  const res = await fetch(url, { headers: { 'User-Agent': 'matchstatto-poc/0.1 (hobby project; hourly at most)', 'Accept-Language': 'en-GB' } });
   if (!res.ok) throw new Error(`BBC ${url}: HTTP ${res.status}`);
   return res.text();
 }
@@ -122,7 +122,7 @@ export async function listMatches({ team, months }) {
   const all = [];
   for (const ym of months) {
     const url = `${BASE}/${team}/scores-fixtures/${ym}`;
-    const res = await fetch(url, { headers: { 'User-Agent': 'touchline-poc/0.1 (hobby project; hourly at most)', 'Accept-Language': 'en-GB' } });
+    const res = await fetch(url, { headers: { 'User-Agent': 'matchstatto-poc/0.1 (hobby project; hourly at most)', 'Accept-Language': 'en-GB' } });
     if (!res.ok) throw new Error(`BBC ${team} ${ym}: HTTP ${res.status}`);
     const { matches, unknown } = parseMonth(await res.text(), ym, team);
     if (unknown.length) console.warn(`BBC ${team} ${ym}: ${unknown.length} match line(s) with no date heading skipped`);

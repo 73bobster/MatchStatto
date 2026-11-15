@@ -10,7 +10,7 @@ if (!KEY) { say('APIFOOTBALL_KEY is not set. Add it under Settings > Secrets and
 let calls = 0;
 async function api(path) {
   calls++;
-  const r = await fetch(BASE + path, { headers: { 'x-apisports-key': KEY, 'User-Agent': 'touchline-probe/0.1' } });
+  const r = await fetch(BASE + path, { headers: { 'x-apisports-key': KEY, 'User-Agent': 'matchstatto-probe/0.1' } });
   let j = {};
   try { j = await r.json(); } catch (e) { /* not JSON */ }
   const errs = j.errors && (Array.isArray(j.errors) ? j.errors : Object.values(j.errors));

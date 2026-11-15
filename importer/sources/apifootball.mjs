@@ -1,4 +1,4 @@
-// API-Football source (paid-plan path). Not used while Touchline is a hobby PoC.
+// API-Football source (paid-plan path). Not used while MatchStatto is a hobby PoC.
 // The free plan only reaches seasons 2022-2024 (see probe.mjs), so current-season games need a paid plan.
 // Switch on at launch with: node importer/import.mjs --source apifootball
 // Needs APIFOOTBALL_KEY. Team ids found by the probe: Rangers 257, Heart of Midlothian 254.

@@ -1,6 +1,6 @@
 {
-  "name": "Touchline",
-  "short_name": "Touchline",
+  "name": "MatchStatto",
+  "short_name": "MatchStatto",
   "description": "Record your team, squad and matches from the touchline.",
   "start_url": "./",
   "scope": "./",

@@ -1,4 +1,4 @@
--- Touchline schema v2 (Neon Postgres + Data API; roles enforced by row-level security).
+-- MatchStatto schema v2 (Neon Postgres + Data API; roles enforced by row-level security).
 -- Global role: profiles.is_superuser (set by hand in SQL, never by the client).
 -- Team roles: team_members.role = coach | reviewer. Coaches write, reviewers read.
 -- Superusers read everything; they can only edit a team after adding themselves as its coach.

@@ -207,7 +207,7 @@ export function parseMatchPage(html) {
 
 export async function fetchMatchPage(pageId) {
   const url = `https://www.bbc.co.uk/sport/football/live/${pageId}`;
-  const res = await fetch(url, { headers: { 'User-Agent': 'touchline-poc/0.1 (hobby project; hourly at most)', 'Accept-Language': 'en-GB' } });
+  const res = await fetch(url, { headers: { 'User-Agent': 'matchstatto-poc/0.1 (hobby project; hourly at most)', 'Accept-Language': 'en-GB' } });
   if (!res.ok) throw new Error(`BBC match ${pageId}: HTTP ${res.status}`);
   return parseMatchPage(await res.text());
 }

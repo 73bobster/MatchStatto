@@ -1,4 +1,4 @@
-# Touchline PoC
+# MatchStatto PoC
 
 Offline-first PWA for grassroots youth coaches: set up a team and squad, record matches live, track training attendance and see squad stats. Works with no signal and syncs to a Neon Postgres database when online.
 
@@ -21,7 +21,7 @@ Live app: https://73bobster.github.io/TouchLine/ (GitHub Pages) · Licence: MIT
 - `db/schema.sql`: Postgres schema, roles and row-level security for Neon.
 
 ## Neon setup (already done for the live project)
-Neon project `touchline` (aws-eu-west-2) with Managed Better Auth and the Data API enabled. Endpoints are set at the top of `index.html` (`AUTH_URL`, `REST_URL`). To use your own project: enable Auth and Data API, run `db/schema.sql`, add your site origin as a trusted domain, and change the two URLs.
+Neon project `matchstatto` (aws-eu-west-2) with Managed Better Auth and the Data API enabled. Endpoints are set at the top of `index.html` (`AUTH_URL`, `REST_URL`). To use your own project: enable Auth and Data API, run `db/schema.sql`, add your site origin as a trusted domain, and change the two URLs.
 
 **First admin:** sign up in the app, then in the Neon SQL editor run
 `update public.profiles set is_superuser = true where email = 'you@example.com';`

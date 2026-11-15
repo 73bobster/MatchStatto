@@ -5,7 +5,7 @@ name: Import favourite teams
 #  - Run workflow (by hand, once on the default branch): full backfill (--details all), loads into Neon
 #  - schedule: hourly, only inside 13:00-23:59 UK time (the script enforces the window), recent games only.
 #    GitHub runs schedules from the default branch, so this starts once the work is merged to main.
-# Needs for the database load: repository secret NEON_DATABASE_URL (Neon > project touchline > Connect > owner role).
+# Needs for the database load: repository secret NEON_DATABASE_URL (Neon > project matchstatto > Connect > owner role).
 on:
   push:
     branches: [feature/favourite-teams-import]

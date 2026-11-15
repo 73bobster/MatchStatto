@@ -7,10 +7,10 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Touchline">
+<meta name="apple-mobile-web-app-title" content="MatchStatto">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>Touchline</title>
+<title>MatchStatto</title>
 <style>
 :root{--font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;--p:#0b6b3a;--pt:#fff;--s:#fff;--st:#111;--bg:#f3f5f4;--card:#fff;--ink:#14201a;--mute:#5d6b63;--line:#dfe5e1;--bad:#c0392b;--ok:#1e8f4e;--warn:#b7791f}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -465,14 +465,16 @@ main.lvm{padding-top:4px}
 <body>
 <div id="app"></div>
 <div id="sheet"></div>
-<noscript>Touchline needs JavaScript.</noscript>
+<noscript>MatchStatto needs JavaScript.</noscript>
 <script>
 (()=>{
 'use strict';
 /* ---------- helpers ---------- */
 const LOCAL=/[?&]local=1/.test(location.search);
 const CLOUD=!LOCAL;
-const KEY=CLOUD?'touchline-v2':'touchline-v2-local';
+/* one-time rename of saved data: copy touchline-* keys to matchstatto-* (old copies are left in place) */
+try{Object.keys(localStorage).filter(k=>k.indexOf('touchline-')===0).forEach(k=>{const n='matchstatto-'+k.slice(10);if(localStorage.getItem(n)===null)localStorage.setItem(n,localStorage.getItem(k))})}catch(e){}
+const KEY=CLOUD?'matchstatto-v2':'matchstatto-v2-local';
 const OCR=true;
 const AUTH_URL='https://ep-icy-union-zai4i905.neonauth.c-2.eu-west-2.aws.neon.tech/neondb/auth';
 const REST_URL='https://ep-icy-union-zai4i905.apirest.c-2.eu-west-2.aws.neon.tech/neondb/rest/v1';
@@ -521,7 +523,7 @@ function load(){
   try{const o=JSON.parse(localStorage.getItem(KEY));if(o&&o.v===2)return o}catch(e){}
   const db=blankDB();
   if(!CLOUD){
-    try{const o=JSON.parse(localStorage.getItem('touchline-poc-v1'));
+    try{const o=JSON.parse(localStorage.getItem('matchstatto-poc-v1'));
       if(o&&o.team){o.team.id='local';o.players.forEach(p=>{if(p.left===undefined)p.left=false});db.teams.local=Object.assign(EMPTY(),o,{role:'coach'});db.cur='local'}}catch(e){}
   }
   return db}
@@ -692,7 +694,7 @@ function tabbar(){
 
 function onboard(){
   const t=V.draft;
-  return `<header class="top"><div class="hrow">${crest(t,44)}<div><h1>Touchline</h1><div class="sub">Set up your team</div></div></div></header>
+  return `<header class="top"><div class="hrow">${crest(t,44)}<div><h1>MatchStatto</h1><div class="sub">Set up your team</div></div></div></header>
   <main>${teamFields(t)}
   ${V.err?`<div class="err">${esc(V.err)}</div>`:''}
   <button class="btn block lg" data-act="createTeam">Create team</button>
@@ -1894,7 +1896,7 @@ function act(a,ds,el){
     case 'restoreDo':{
       try{const o=JSON.parse(V.sheet.d.text);if(!o||!Array.isArray(o.players)||!Array.isArray(o.matches))throw new Error('shape');
         const td=Object.assign(EMPTY(),o,{role:'coach'});td.team=Object.assign({id:'local'},td.team);DB.teams.local=td;DB.cur='local';S=td;save();V.sheet=null;V.tab='match';V.matchId=null;break}
-      catch(e){V.sheet.err="That doesn't look like a Touchline backup.";renderSheet();return}}
+      catch(e){V.sheet.err="That doesn't look like a MatchStatto backup.";renderSheet();return}}
     case 'copyText':{
       const t=V.sheet.d.text,ta=document.getElementById('sharetext');
       const fallback=()=>{if(ta){ta.focus();ta.select()}toast('Touch and hold the text to copy')};
@@ -2133,7 +2135,7 @@ async function doAuth(){
   a.busy=false;render();
 }
 /* email link sign-up / sign-in (no password) */
-const PEND='touchline-pending';
+const PEND='matchstatto-pending';
 async function doLink(){
   const a=V.auth;a.err='';const email=a.email.trim();
   if(!/^\S+@\S+\.\S+$/.test(email)){a.err='Enter a valid email address.';render();return}
@@ -2388,7 +2390,7 @@ if(CLOUD){
 /* ---------- auth & team screens ---------- */
 function authView(){
   const a=V.auth;const up=a.mode==='up';
-  const head=`<header class="top"><div class="hrow">${crest({name:'Touchline'},44)}<div><h1>Touchline</h1><div class="sub">${up?'Create your account':'Sign in to your team'}</div></div></div></header>`;
+  const head=`<header class="top"><div class="hrow">${crest({name:'MatchStatto'},44)}<div><h1>MatchStatto</h1><div class="sub">${up?'Create your account':'Sign in to your team'}</div></div></div></header>`;
   if(a.sent)return head+`<main><div class="card" style="text-align:center"><div style="font-size:42px">📧</div><h2 style="margin:6px 0">Check your email</h2><p style="margin:0 0 6px">We sent a link to <b>${esc(a.email.trim())}</b>.</p><p class="note" style="margin-top:0">Tap the link to confirm your email and you are in. It works once and expires soon. Open it on this device. Look in junk if it does not arrive.</p></div>
   ${a.err?`<div class="err">${esc(a.err)}</div>`:''}
   <button class="btn sec block" data-act="authLink" ${a.busy?'disabled':''}>${a.busy?'Sending…':'Send it again'}</button>
@@ -2709,7 +2711,7 @@ function csvBuild(){
 }
 function exportCsv(){
   const csv=csvBuild();
-  const name='touchline-'+(S.team.name||'team').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+'-matches-'+todayStr()+'.csv';
+  const name='matchstatto-'+(S.team.name||'team').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+'-matches-'+todayStr()+'.csv';
   const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
   try{
     const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();
@@ -2732,7 +2734,7 @@ function settingsBody(){
     ['Whiteboard','Open Whiteboard from the match screen or Settings. Drag players around, draw lines and arrows, add the ball and cones, and save a picture to show a player at the side of the pitch. My team puts your starters in position.'],
     ['Injuries, joiners and leavers','Open a player in Squad to set a joining date, a leaving date, or mark them as long-term injured. Injured players are left out of the squad by default for new matches. Leavers move to Former players and their number is free to reuse.'],
     ['Stats','The Stats tab is view only. Tap a column heading to sort, and tap again to reverse. Minutes run to the final whistle and include stoppage time.'],
-    ['Working without signal','Touchline works offline. Changes are kept on your phone and upload on their own when you are back online. The badge at the top shows the sync status.'],
+    ['Working without signal','MatchStatto works offline. Changes are kept on your phone and upload on their own when you are back online. The badge at the top shows the sync status.'],
     ['Who can do what','Admin sees every team. Coaches record and edit their own team. Reviewers can view matches, stats and summaries but not change anything. Invite people from the Team tab.'],
     ['Install on your phone','iPhone: open in Safari, tap Share, then Add to Home Screen. Android: Chrome menu, then Install app.']
   ].map(([t,b])=>`<details class="help"><summary>${t}</summary><p>${b}</p></details>`).join('');
@@ -2750,7 +2752,7 @@ function settingsBody(){
   ${S.team?`<h2 class="set-sec">Your data</h2><div class="note" style="margin-top:0">One row per player per match (who started, where, minutes) and one row per action. Opens in Excel or Numbers.</div><button class="btn sec block" data-act="exportCsv" style="margin-bottom:10px">⬇ Download all matches (CSV)</button>`:''}
   ${canEdit()?`<div class="lbl">Pin shot, goal and assist locations by default</div><div class="chips small"><button class="${pr.pins?'':'on'}" data-act="pinsDefault" data-v="off">Off</button><button class="${pr.pins?'on':''}" data-act="pinsDefault" data-v="on">On</button></div>`:''}
   <h2 class="set-sec">Help</h2>${help}
-  <div class="note">Touchline proof of concept · open source (MIT) · <a href="https://github.com/73bobster/TouchLine" target="_blank" rel="noopener">GitHub</a></div>`);
+  <div class="note">MatchStatto proof of concept · open source (MIT) · <a href="https://github.com/73bobster/TouchLine" target="_blank" rel="noopener">GitHub</a></div>`);
 }
 function sheetExtra(s,m,d){
   switch(s.kind){
@@ -2855,7 +2857,7 @@ function actExtra(a,ds,el){
     case 'invMake':{const d=V.sheet.d;d.busy=true;d.err='';renderSheet();const code=genCode();
       rest('POST','/invites',{code,team_id:S.team.id,role:d.role,uses_left:1},'return=minimal').then(()=>{d.code=code;d.busy=false;return loadInvites()}).catch(e=>{d.busy=false;d.err=e.message;renderSheet()});return true}
     case 'invCopy':copyLink();return true;
-    case 'invShare':try{navigator.share({text:'Join '+S.team.name+' on Touchline: '+inviteLink(V.sheet.d.code)+' (code '+V.sheet.d.code+')'}).catch(()=>{})}catch(e){}return true;
+    case 'invShare':try{navigator.share({text:'Join '+S.team.name+' on MatchStatto: '+inviteLink(V.sheet.d.code)+' (code '+V.sheet.d.code+')'}).catch(()=>{})}catch(e){}return true;
     case 'invDel':rest('DELETE','/invites?code=eq.'+encodeURIComponent(ds.val)).then(loadInvites).catch(e=>toast(e.message));return true;
     case 'membersOpen':if(!adm())return true;V.sheet={kind:'members',d:{}};renderSheet();refreshMembers();return true;
     case 'memRole':rest('PATCH','/team_members?team_id=eq.'+encodeURIComponent(S.team.id)+'&user_id=eq.'+encodeURIComponent(ds.id),{role:ds.val},'return=minimal').then(refreshMembers).catch(e=>{V.sheet.d.err=e.message;renderSheet()});return true;
@@ -2982,7 +2984,7 @@ const clubSlug=n=>String(n||'').toLowerCase().replace(/&/g,'and').replace(/['’
 function clubFind(txt){const k=clubKey(txt);if(!k)return null;const a=CLUB_ALIAS[k];const hit=UK_CLUBS.find(c=>clubKey(c[0])===k||(a&&c[0]===a)||(k.length>3&&clubKey(c[0])===k.replace(/ (united|city|town)$/,'')));return hit?{name:hit[0],league:hit[1],slug:clubSlug(hit[0])}:null}
 
 /* ---------- pro games: read-only, from the importer's tables ---------- */
-const PROKEY='touchline-pro-v1';
+const PROKEY='matchstatto-pro-v1';
 const PRO=(()=>{let o={};try{o=JSON.parse(localStorage.getItem(PROKEY)||'{}')}catch(e){}return Object.assign({matches:[],detail:{},at:0,filter:'all',ref:null,busy:false,err:''},o,{busy:false,err:'',ref:null})})();
 const proSave=()=>{try{localStorage.setItem(PROKEY,JSON.stringify({matches:PRO.matches,detail:PRO.detail,at:PRO.at,filter:PRO.filter,slug:PRO.slug,season:PRO.season}))}catch(e){}};
 const PROTEAMS={rangers:'Rangers','heart-of-midlothian':'Hearts'};
@@ -3239,7 +3241,7 @@ render();
 finishLink();
 if(CLOUD&&DB.user)setTimeout(()=>syncNow(),300);
 if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){navigator.serviceWorker.register('sw.js').catch(()=>{})}
-window.__touchline={balancePlan,csvBuild,liveRows,describe,posMap,startPos,prefillLineup,placePlayers,formSlots,movePos,lineupDrop,poolFor,fmtN,nearestPos,minsPlayed,matchEnd,stats,matchSummary,applyRows,S:()=>S,DB:()=>DB,V,act,render,parseRoster,syncNow,rowsFor,pendingCount};
+window.__matchstatto={balancePlan,csvBuild,liveRows,describe,posMap,startPos,prefillLineup,placePlayers,formSlots,movePos,lineupDrop,poolFor,fmtN,nearestPos,minsPlayed,matchEnd,stats,matchSummary,applyRows,S:()=>S,DB:()=>DB,V,act,render,parseRoster,syncNow,rowsFor,pendingCount};
 })();
 </script>
 </body>
