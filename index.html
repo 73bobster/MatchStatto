@@ -541,7 +541,7 @@ function save(){REV++;try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){
 function setCur(id){DB.cur=id;S=DB.teams[id]||EMPTY();V.tab='match';V.matchId=null;V.sess=null;V.sheet=null;try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){}}
 const V={lsel:null,prefill:'',luList:false,sortDir:0,tab:'match',step:'details',matchId:null,sess:null,sheet:null,imp:null,attMode:'sessions',sort:'num',
   auth:{mode:'in',email:'',password:'',name:'',invite:'',err:'',busy:false,sent:false},
-  draft:{name:'',age:'',ground:'',primary:'#0b6b3a',secondary:'#ffffff',onPitch:11,periods:2,periodMins:45},err:''};
+  draft:{name:'',age:'',ground:'',primary:'#14243a',secondary:'#ffffff',onPitch:11,periods:2,periodMins:45},err:''};
 const T=()=>(V.newTeam||!S.team)?V.draft:S.team;
 const canEdit=()=>S.role==='coach';
 const M=()=>S.matches.find(m=>m.id===S.activeId)||null;
@@ -1841,7 +1841,7 @@ const CONFIRMS={
   delMatch(id){const m=S.matches.find(x=>x.id===id);if(!m)return;S.matches=S.matches.filter(x=>x.id!==id);if(S.activeId===id)S.activeId=null;if(V.matchId===id)V.matchId=null;if(V.logId===id)V.logId=null;save();V.sheet=null;toast('Match deleted');render()},
   cancelMatch(){const m=M();S.matches=S.matches.filter(x=>x.id!==m.id);S.activeId=null;save();V.sheet=null;V.err='';render()},
   playerRemove(id){const p=P(id);if(p){p.left=true;if(!p.end)p.end=todayStr()}save();V.sheet=null;render()},
-  reset(){DB=blankDB();DB.user={id:'local',email:'',name:'You',isSuper:true};S=EMPTY();V.tab='match';V.matchId=null;V.draft={name:'',age:'',ground:'',primary:'#0b6b3a',secondary:'#ffffff',onPitch:11,periods:2,periodMins:45};save();V.sheet=null;render()}
+  reset(){DB=blankDB();DB.user={id:'local',email:'',name:'You',isSuper:true};S=EMPTY();V.tab='match';V.matchId=null;V.draft={name:'',age:'',ground:'',primary:'#14243a',secondary:'#ffffff',onPitch:11,periods:2,periodMins:45};save();V.sheet=null;render()}
 };
 
 function matchSummary(m){
@@ -2206,7 +2206,7 @@ async function createTeamCloud(){
     }
     if(t.proOn&&t.proTeam)await rest('PATCH','/teams?id=eq.'+encodeURIComponent(id),{pro_team:t.proTeam},'return=minimal');
     SYNC.state='idle';await syncNow(true);setCur(id);V.newTeam=false;V.tab=V.proNew?'history':'squad';V.proNew=false;
-    V.draft=Object.assign({},V.draft,{name:'',age:'',ground:'',primary:'#0b6b3a',secondary:'#ffffff',proOn:false,proTeam:'',proClub:'',proName:''});
+    V.draft=Object.assign({},V.draft,{name:'',age:'',ground:'',primary:'#14243a',secondary:'#ffffff',proOn:false,proTeam:'',proClub:'',proName:''});
   }catch(e){V.err=e.message;V.proNew=false;toast('Could not create the team: '+e.message)}
   V.busy=false;render();
 }
@@ -2344,7 +2344,7 @@ async function syncNow(manual){
       (tr||[]).filter(x=>x.deleted).forEach(x=>{ids.delete(x.id);if(DB.teams[x.id]){removeTeamLocal(x.id);changed=true}});
     }
     for(const id of ids){
-      if(!DB.teams[id]){DB.teams[id]=Object.assign(EMPTY(),{team:{id,name:'…',age:'',ground:'',primary:'#0b6b3a',secondary:'#ffffff',onPitch:11,periods:2,periodMins:45}});changed=true}
+      if(!DB.teams[id]){DB.teams[id]=Object.assign(EMPTY(),{team:{id,name:'…',age:'',ground:'',primary:'#14243a',secondary:'#ffffff',onPitch:11,periods:2,periodMins:45}});changed=true}
       const r=roleOf[id]||'viewer';if(DB.teams[id].role!==r){DB.teams[id].role=r;changed=true}
     }
     for(const id of Object.keys(DB.teams)){if(!ids.has(id)){delete DB.teams[id];delete DB.sigs[id];delete DB.cursors[id];changed=true}}
@@ -2840,7 +2840,7 @@ function actExtra(a,ds,el){
     case 'proPickOpen':V.sheet={kind:'proPick',d:{q:''}};renderSheet();return true;
     case 'proPickClub':{
       const c=UK_CLUBS[+ds.i];if(!c)return true;const f=CLUB_INFO[c[0]]||[];
-      V.draft=Object.assign({},V.draft,{name:c[0],age:'Professional',ground:f[2]||'',primary:f[0]||'#0b6b3a',secondary:f[1]||'#ffffff',proOn:true,proTeam:clubSlug(c[0]),proClub:c[0],proName:c[0]});
+      V.draft=Object.assign({},V.draft,{name:c[0],age:'Professional',ground:f[2]||'',primary:f[0]||'#14243a',secondary:f[1]||'#ffffff',proOn:true,proTeam:clubSlug(c[0]),proClub:c[0],proName:c[0]});
       V.sheet=null;V.proNew=true;createTeamCloud();return true}
     case 'newTeamOpen':V.newTeam=true;V.err='';render();return true;
     case 'newTeamBack':V.newTeam=false;V.err='';render();return true;
