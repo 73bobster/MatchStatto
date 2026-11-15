@@ -2,7 +2,7 @@
 
 Offline-first PWA for grassroots youth coaches: set up a team and squad, record matches live, track training attendance and see squad stats. Works with no signal and syncs to a Neon Postgres database when online.
 
-Live app: https://matchstatto.cobaltpinksoftware.com/ (Cloudflare Pages) · Licence: MIT
+Live app: https://app.matchstatto.com/ (Cloudflare Pages) · Licence: MIT
 
 ## What it does
 - **Roles:** admin (superuser), coach, reviewer. Sign in with email and password; join a team with an invite code.

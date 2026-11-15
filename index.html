@@ -9,13 +9,15 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="MatchStatto">
 <link rel="manifest" href="manifest.json">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="icon-192.png">
 <title>MatchStatto</title>
 <style>
 @font-face{font-family:Inter;font-weight:400;font-style:normal;font-display:swap;src:url(fonts/inter-400.woff2) format("woff2")}
 @font-face{font-family:Inter;font-weight:600;font-style:normal;font-display:swap;src:url(fonts/inter-600.woff2) format("woff2")}
 @font-face{font-family:Manrope;font-weight:800;font-style:normal;font-display:swap;src:url(fonts/manrope-800.woff2) format("woff2")}
-:root{--font:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;--head:Manrope,Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;--brand-blue:#315fea;--brand-pink:#f05a8d;--p:#14243a;--pt:#fff;--s:#fff;--st:#111;--bg:#eef2f7;--card:#fff;--ink:#14243a;--mute:#5b6b82;--line:#dbe2ec;--bad:#c0392b;--ok:#1e8f4e;--warn:#b7791f}
+:root{--font:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;--head:Manrope,Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;--brand-blue:#315fea;--brand-pink:#f05a8d;--p:#14243a;--pt:#fff;--s:#f05a8d;--act:#315fea;--st:#111;--bg:#eef2f7;--card:#fff;--ink:#14243a;--mute:#5b6b82;--line:#dbe2ec;--bad:#c0392b;--ok:#1e8f4e;--warn:#b7791f}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.35 var(--font)}
 #app{max-width:560px;margin:0 auto;min-height:100vh;padding-bottom:calc(84px + env(safe-area-inset-bottom))}
@@ -37,7 +39,10 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--p)}
 button{font:inherit;min-height:48px;border-radius:12px;border:0;padding:0 16px;cursor:pointer;color:var(--ink);background:#e9eeeb}
 button:active{transform:scale(.98)}
 button[disabled]{opacity:.45}
-.btn{background:var(--p);color:var(--pt);font-weight:700}
+.btn{background:var(--act,var(--p));color:var(--pt);font-weight:700}
+a{color:var(--brand-blue)}
+h3,.score,header.top .tn{font-family:var(--head);font-weight:800}
+header.top .bmk{display:inline-flex;width:40px;flex:none;opacity:.95}header.top .bmk svg{width:100%;height:auto;display:block}
 .btn.sec{background:#fff;color:var(--ink);border:2px solid var(--line);font-weight:600}
 .btn.bad{background:var(--bad);color:#fff;font-weight:700}
 .btn.block{display:block;width:100%}
@@ -56,7 +61,7 @@ button[disabled]{opacity:.45}
 .tabs div{display:flex;max-width:560px;margin:0 auto}
 .tabs button{flex:1;background:none;border-radius:0;min-height:62px;font-size:12px;font-weight:600;color:var(--mute);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
 .tabs button i{font-style:normal;font-size:22px}
-.tabs button.on{color:var(--p)}
+.tabs button.on{color:var(--act,var(--p))}
 .prow{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:8px}
 .prow .num{width:44px;height:44px;border-radius:12px;background:var(--p);color:var(--pt);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:19px;flex:none}
 .prow .nm{flex:1;min-width:0;font-weight:600}
@@ -293,7 +298,7 @@ details.help p{margin:0 0 12px;font-size:14px;color:var(--mute)}
 :root[data-theme=dark]{color-scheme:dark;--bg:#0e1411;--card:#17201b;--ink:#e6eee9;--mute:#9bada3;--line:#2b3832}
 [data-theme=dark] input,[data-theme=dark] select,[data-theme=dark] textarea{background:#101713}
 [data-theme=dark] button{background:#22302a}
-[data-theme=dark] .btn{background:var(--p);color:var(--pt)}
+[data-theme=dark] .btn{background:var(--act,var(--p));color:var(--pt)}
 [data-theme=dark] .btn.bad{background:var(--bad);color:#fff}
 [data-theme=dark] .btn.sec,[data-theme=dark] .chips button,[data-theme=dark] .seg button,[data-theme=dark] .evg button,[data-theme=dark] .pb,[data-theme=dark] .prow,[data-theme=dark] .att,[data-theme=dark] .tbl,[data-theme=dark] .tbl td.n,[data-theme=dark] .tbl td.nm,[data-theme=dark] .sheet-in,[data-theme=dark] .tabs,[data-theme=dark] .dz,[data-theme=dark] .modebar,[data-theme=dark] .posrow button{background:var(--card)}
 [data-theme=dark] .chips button.on,[data-theme=dark] .seg button.on,[data-theme=dark] .modebar button.on,[data-theme=dark] .posrow button.on{background:var(--p);color:var(--pt)}
@@ -541,7 +546,7 @@ function save(){REV++;try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){
 function setCur(id){DB.cur=id;S=DB.teams[id]||EMPTY();V.tab='match';V.matchId=null;V.sess=null;V.sheet=null;try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){}}
 const V={lsel:null,prefill:'',luList:false,sortDir:0,tab:'match',step:'details',matchId:null,sess:null,sheet:null,imp:null,attMode:'sessions',sort:'num',
   auth:{mode:'in',email:'',password:'',name:'',invite:'',err:'',busy:false,sent:false},
-  draft:{name:'',age:'',ground:'',primary:'#14243a',secondary:'#ffffff',onPitch:11,periods:2,periodMins:45},err:''};
+  draft:{name:'',age:'',ground:'',primary:'#14243a',secondary:'#f05a8d',onPitch:11,periods:2,periodMins:45},err:''};
 const T=()=>(V.newTeam||!S.team)?V.draft:S.team;
 const canEdit=()=>S.role==='coach';
 const M=()=>S.matches.find(m=>m.id===S.activeId)||null;
@@ -670,11 +675,11 @@ function attStats(pid){
 
 /* ---------- theme ---------- */
 function applyTheme(){
-  const t=T();let p=t.primary||'#14243a',s=t.secondary||'#ffffff';
+  const t=T();let p=t.primary||'#14243a',s=t.secondary||'#f05a8d';
   const ac=DB.prefs&&DB.prefs.accent;if(ac&&ac.length===2){p=ac[0];s=ac[1]}
   try{const th=(DB.prefs&&DB.prefs.theme)||'light';const dark=th==='dark'||(th==='auto'&&window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=dark?'dark':'light';document.documentElement.style.setProperty('--font',FONTS[(DB.prefs&&DB.prefs.font)||'system']||FONTS.system)}catch(e){}
   const r=document.documentElement.style;
-  r.setProperty('--p',p);r.setProperty('--pt',textOn(p));r.setProperty('--s',s);r.setProperty('--st',textOn(s));
+  r.setProperty('--act',(ac&&ac.length===2)||(t.primary&&t.primary.toLowerCase()!=='#14243a')?p:'#315fea');r.setProperty('--p',p);r.setProperty('--pt',textOn(p));r.setProperty('--s',s);r.setProperty('--st',textOn(s));
   const mt=document.querySelector('meta[name=theme-color]');if(mt)mt.setAttribute('content',p);
 }
 const crest=(t,px)=>`<span class="crest" style="width:${px}px;height:${px}px;font-size:${Math.round(px*.38)}px${t.primary?`;background:${t.primary};color:${textOn(t.primary)};border-color:${t.secondary||'#fff'}`:''}">${esc((t.name||'T').trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase())}</span>`;
@@ -688,7 +693,7 @@ function syncBadge(){
   return `<span class="sbadge ${m[1]}" data-act="${st==='auth'?'reauth':'syncNow'}" style="cursor:pointer">${m[0]}</span>`;
 }
 const roleName=()=>S.role==='coach'?'Coach':S.role==='reviewer'?'Reviewer':S.role==='viewer'?'Admin view':'';
-const header=(title,sub,right)=>`<header class="top"><div class="hrow">${S.team?crest(S.team,38):''}<div style="flex:1;min-width:0">${S.team?`<div class="tn">${esc(S.team.name)}</div>`:''}<h1>${esc(title)}</h1>${sub?`<div class="sub">${esc(sub)}</div>`:''}</div>${right||''}${syncBadge()}<button class="gear" data-act="settings" aria-label="Settings">⚙️</button></div></header>`;
+const header=(title,sub,right)=>`<header class="top"><div class="hrow">${S.team?crest(S.team,38):''}<div style="flex:1;min-width:0">${S.team?`<div class="tn">${esc(S.team.name)}</div>`:''}<h1>${esc(title)}</h1>${sub?`<div class="sub">${esc(sub)}</div>`:''}</div>${right||''}<span class="bmk">${BRAND_MARK}</span>${syncBadge()}<button class="gear" data-act="settings" aria-label="Settings">⚙️</button></div></header>`;
 
 function tabbar(){
   const live=M()&&M().status==='live';
@@ -1841,7 +1846,7 @@ const CONFIRMS={
   delMatch(id){const m=S.matches.find(x=>x.id===id);if(!m)return;S.matches=S.matches.filter(x=>x.id!==id);if(S.activeId===id)S.activeId=null;if(V.matchId===id)V.matchId=null;if(V.logId===id)V.logId=null;save();V.sheet=null;toast('Match deleted');render()},
   cancelMatch(){const m=M();S.matches=S.matches.filter(x=>x.id!==m.id);S.activeId=null;save();V.sheet=null;V.err='';render()},
   playerRemove(id){const p=P(id);if(p){p.left=true;if(!p.end)p.end=todayStr()}save();V.sheet=null;render()},
-  reset(){DB=blankDB();DB.user={id:'local',email:'',name:'You',isSuper:true};S=EMPTY();V.tab='match';V.matchId=null;V.draft={name:'',age:'',ground:'',primary:'#14243a',secondary:'#ffffff',onPitch:11,periods:2,periodMins:45};save();V.sheet=null;render()}
+  reset(){DB=blankDB();DB.user={id:'local',email:'',name:'You',isSuper:true};S=EMPTY();V.tab='match';V.matchId=null;V.draft={name:'',age:'',ground:'',primary:'#14243a',secondary:'#f05a8d',onPitch:11,periods:2,periodMins:45};save();V.sheet=null;render()}
 };
 
 function matchSummary(m){
@@ -2206,7 +2211,7 @@ async function createTeamCloud(){
     }
     if(t.proOn&&t.proTeam)await rest('PATCH','/teams?id=eq.'+encodeURIComponent(id),{pro_team:t.proTeam},'return=minimal');
     SYNC.state='idle';await syncNow(true);setCur(id);V.newTeam=false;V.tab=V.proNew?'history':'squad';V.proNew=false;
-    V.draft=Object.assign({},V.draft,{name:'',age:'',ground:'',primary:'#14243a',secondary:'#ffffff',proOn:false,proTeam:'',proClub:'',proName:''});
+    V.draft=Object.assign({},V.draft,{name:'',age:'',ground:'',primary:'#14243a',secondary:'#f05a8d',proOn:false,proTeam:'',proClub:'',proName:''});
   }catch(e){V.err=e.message;V.proNew=false;toast('Could not create the team: '+e.message)}
   V.busy=false;render();
 }
@@ -2344,7 +2349,7 @@ async function syncNow(manual){
       (tr||[]).filter(x=>x.deleted).forEach(x=>{ids.delete(x.id);if(DB.teams[x.id]){removeTeamLocal(x.id);changed=true}});
     }
     for(const id of ids){
-      if(!DB.teams[id]){DB.teams[id]=Object.assign(EMPTY(),{team:{id,name:'…',age:'',ground:'',primary:'#14243a',secondary:'#ffffff',onPitch:11,periods:2,periodMins:45}});changed=true}
+      if(!DB.teams[id]){DB.teams[id]=Object.assign(EMPTY(),{team:{id,name:'…',age:'',ground:'',primary:'#14243a',secondary:'#f05a8d',onPitch:11,periods:2,periodMins:45}});changed=true}
       const r=roleOf[id]||'viewer';if(DB.teams[id].role!==r){DB.teams[id].role=r;changed=true}
     }
     for(const id of Object.keys(DB.teams)){if(!ids.has(id)){delete DB.teams[id];delete DB.sigs[id];delete DB.cursors[id];changed=true}}
