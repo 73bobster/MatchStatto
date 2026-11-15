@@ -2752,7 +2752,7 @@ function settingsBody(){
   ${S.team?`<h2 class="set-sec">Your data</h2><div class="note" style="margin-top:0">One row per player per match (who started, where, minutes) and one row per action. Opens in Excel or Numbers.</div><button class="btn sec block" data-act="exportCsv" style="margin-bottom:10px">⬇ Download all matches (CSV)</button>`:''}
   ${canEdit()?`<div class="lbl">Pin shot, goal and assist locations by default</div><div class="chips small"><button class="${pr.pins?'':'on'}" data-act="pinsDefault" data-v="off">Off</button><button class="${pr.pins?'on':''}" data-act="pinsDefault" data-v="on">On</button></div>`:''}
   <h2 class="set-sec">Help</h2>${help}
-  <div class="note">MatchStatto proof of concept · open source (MIT) · <a href="https://github.com/73bobster/TouchLine" target="_blank" rel="noopener">GitHub</a></div>`);
+  <div class="note">MatchStatto proof of concept · open source (MIT) · <a href="https://github.com/73bobster/MatchStatto" target="_blank" rel="noopener">GitHub</a></div>`);
 }
 function sheetExtra(s,m,d){
   switch(s.kind){
