@@ -1,6 +1,6 @@
 // MatchStatto PoC service worker: cache the app shell so it opens with no signal.
-const CACHE = 'matchstatto-poc-v51';
-const ASSETS = ['./', 'index.html', 'manifest.json', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png'];
+const CACHE = 'matchstatto-poc-v52';
+const ASSETS = ['./', 'index.html', 'manifest.json', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'fonts/inter-400.woff2', 'fonts/inter-600.woff2', 'fonts/manrope-800.woff2'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
